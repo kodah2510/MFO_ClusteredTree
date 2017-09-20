@@ -1,22 +1,26 @@
+import setting as gv
 from Individual import Individual
-from GlobalVariables 
 import random
 rmp = 0.3
 class Population:
     individuals = []
-    def __init__(self, tasks):
-        global POPULATION
-        for i in range(0, POPULATION):
-            idv = Individual(tasks)
+    def __init__(self):
+        for i in range(0, gv.POPULATION):
+            print("Initialize " + "individual " + str(i))
+            idv = Individual(gv.tasks, gv.nodes, gv.edges)
             self.individuals.append(idv)
-    def update():
+            
+    def update(self):
         # sort the population
-
-        # delete the 
+        sorted(self.individuals, key=lambda idv: idv.scalarFitness)
+        # delete 
+        for i in range(0, len(self.individuals) - gv.POPULATION):
+            self.individuals.pop(i)
         pass
     def eval(self):
         for idv in self.individuals:
-            idv.eval()
+            for t in range(0, len(idv.tasks)):
+                idv.eval(t)
         pass
     def assortativeMating(self):
         pa_idx = random.randrange(len(self.individuals))
@@ -31,7 +35,9 @@ class Population:
             self.__crossover(pa, pb)
         else:
             pa.mutate()
+            pa.eval(pa.skillFactor)
             pb.mutate()
+            pb.eval(pb.skillFactor)
             pass
         pass
     def __setSkillFactorForOffSpring(self, child, pa, pb):
@@ -42,13 +48,19 @@ class Population:
             child.skillFactor = pb.skillFactor
         pass
     def __crossover(self, pa, pb):
-        global nodes
         combinedEdges = []
         combinedEdges = self.__combine(pa, pb)
-        ca = Individual(nodes, combinedEdges)
-        cb = Individual(nodes, combinedEdges)
+        ca = Individual(gv.tasks, gv.nodes, combinedEdges)
+        cb = Individual(gv.tasks, gv.nodes, combinedEdges)
         self.__setSkillFactorForOffSpring(ca, pa, pb)
         self.__setSkillFactorForOffSpring(cb, pa, pb)
+
+        ca.eval(ca.skillFactor)
+        cb.eval(cb.skillFactor)
+
+        self.individuals.append(ca)
+        self.individuals.append(cb)
+
         pass
     def __combine(self, pa, pb):
         distinctEdges = pa.tree.edge_set
@@ -56,18 +68,32 @@ class Population:
         return distinctEdges
         pass
     def ranking(self):
-        global POPULATION
+        print("ranking...")
         for i in range(0, len(self.individuals[0].tasks)): 
-            sorted(self.individuals, key=lambda idv.tasks[i]: idv.tasks[i].factorialCost)
-            for j in range(0, POPULATION):
-                self.individuals[j].tasks[i] = j
+            self.individuals = sorted(self.individuals, key=lambda idv: idv.tasks[i].factorialCost)
+            for j in range(0, len(self.individuals)):
+                self.individuals[j].tasks[i].rank = j + 1   
+        # for idv in self.individuals:
+        #     print(str(idv.tasks[0].rank) + " " + str(idv.tasks[1].rank))
         pass
     def updateSkillFactor(self):
+        print("update skill factor ...")
         for idv in self.individuals:
             idv.updateSkillFactor()
         pass
     def updateScalarFitness(self):
-        for idv in self.individuals:
-            idv.updateScalarFitness()
+        print("update scalar fitness ...")
+        try:
+            for idv in self.individuals:
+                idv.updateScalarFitness()
+        except ZeroDivisionError as err:
+            print(err)
+            pass
+        pass
+    def printTheBest(self):
+        tmp = max(self.individuals, key=lambda idv: idv.scalarFitness)
+        res = str(tmp.tasks[0].factorialCost) + " " + str(tmp.tasks[1].factorialCost)
+        print(res)
+        return res
         pass
     

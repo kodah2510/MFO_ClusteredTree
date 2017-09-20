@@ -1,14 +1,22 @@
-from TreeGenerator import TreeGenerator
+import TreeGenerator as tg
+
 
 POPULATION = 100
 MAX_GEN = 500
 dim = 0
 numberOfCluster = 0
-sourceIndex = -1
+srcIndex = -1
 nodes = []
 edges = []
 clusters = []
 bridgeSet = []
-treeGen = TreeGenerator()
+treeGen = tg.TreeGenerator()
+tasks = []
+ 
+
+
+
+
+
 
 

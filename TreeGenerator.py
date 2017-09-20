@@ -43,7 +43,7 @@ class TreeGenerator:
         for e in tree:
             for bridge in bridgeSet:
                 if(e.vertices[0].name in bridge.clusters and e.vertices[1].name in bridge.clusters):
-                    e_idx = randrange(len(bridge.edges))
+                    e_idx = randrange(len(bridge.edge_set))
                     res.append(bridge.edge_set[e_idx])
         return res
         pass

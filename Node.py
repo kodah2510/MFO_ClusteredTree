@@ -3,8 +3,14 @@ class Node:
         self.name = name
         self.x = x
         self.y = y
-    def setCLuster(self, cluster):
-        self.cluster = cluster
+        self.cluster = 0
+        pass
+    def setCluster(self, i):
+        self.cluster = i
+        pass
+
+
+
         
 
     
