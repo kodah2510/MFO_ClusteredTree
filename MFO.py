@@ -11,7 +11,7 @@ from Bridge import Bridge
 
 def main():
     #read input
-    inputLink = "Data/4Eil9.clt"
+    inputLink = "Data/4Eil10.clt"
     inputHandler = InputHandler()
     inputHandler.readInput(inputLink)
     inputFileName = inputLink.replace('Data/', '_')
@@ -89,7 +89,8 @@ def main():
     outputFile.close()
     import shutil
     import random
-    shutil.move("./output.txt", "./out/output" + str(random.randrange(10))+"_"+inputFileName+".txt")
+    idNumber = random.randrange(1000)
+    shutil.move("./output.txt", "./Output/output"+"_"+ str(idNumber)+"_"+inputFileName+".txt")
     pass
 if __name__=="__main__":
     #setting.init()

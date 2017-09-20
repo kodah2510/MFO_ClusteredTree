@@ -1,12 +1,17 @@
 from Tree import Tree
-from GlobalVariables import *
+from setting import treeGen, clusters, bridgeSet
 
 class Individual:
-    tree = Tree()
-    scalarFitness = -1
-    skillFactor = -1
-    tasks = []
-    def __init__(self, nodes, edges):
+    # tree = Tree()
+    # scalarFitness = -1
+    # skillFactor = -1
+    # tasks = []
+    def __init__(self, tasks, nodes, edges):
+        self.tree = Tree()
+        self.scalarFitness = -1
+        self.skillFactor = -1
+        self.tasks = []
+        #print(edges)
         global treeGen, clusters, bridgeSet
         for clus in clusters:
             clus_nodes = []
@@ -17,7 +22,8 @@ class Individual:
         bridges = treeGen.bridgeGen(clusters, bridgeSet)
         self.tree.addEdges(bridges)
 
-        #self.tasks = tasks[:]
+        import copy 
+        self.tasks = copy.deepcopy(tasks) 
         pass
     def mutate(self):
         self.tree.mutate()
@@ -29,7 +35,6 @@ class Individual:
         minTask = min(self.tasks, key=lambda task: task.rank)
         self.scalarFitness = 1 / minTask.rank
         pass
-    def eval(self):
-        for t in self.tasks:
-            t.computeCost(self.tree.edge_set)
+    def eval(self, taskIdx):
+        self.tasks[taskIdx].computeCost(self.tree.edge_set)
         pass

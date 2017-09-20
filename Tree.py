@@ -56,7 +56,7 @@ class Tree:
             cycle.append(track)
             track = parent[track]
         cycle.append(dst)
-        #print(cycle)
+        print(cycle)
             #prev = u
         # history = []
         # visited = []

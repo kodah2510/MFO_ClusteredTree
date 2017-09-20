@@ -68,7 +68,7 @@ class Population:
         return distinctEdges
         pass
     def ranking(self):
-        print("ranking...")
+        #print("ranking...")
         for i in range(0, len(self.individuals[0].tasks)): 
             self.individuals = sorted(self.individuals, key=lambda idv: idv.tasks[i].factorialCost)
             for j in range(0, len(self.individuals)):
@@ -77,12 +77,12 @@ class Population:
         #     print(str(idv.tasks[0].rank) + " " + str(idv.tasks[1].rank))
         pass
     def updateSkillFactor(self):
-        print("update skill factor ...")
+        #print("update skill factor ...")
         for idv in self.individuals:
             idv.updateSkillFactor()
         pass
     def updateScalarFitness(self):
-        print("update scalar fitness ...")
+        #print("update scalar fitness ...")
         try:
             for idv in self.individuals:
                 idv.updateScalarFitness()
