@@ -7,11 +7,12 @@ class Tree:
     def __init__(self) :
         self.edge_set = []
     def mutate(self):
+        print("mutate")
         #find edges not in this edge_set
         notAddedEdges = []
         notAddedEdges.extend(edge for edge in gv.edges if edge not in self.edge_set)
 
-        e_idx = random.randrange(len(notAddedEdges))
+        e_idx = random.randrange(len(notAddedEdges) - 1)
         newEdge = notAddedEdges[e_idx]
         self.edge_set.append(newEdge) # this will create a cycle
         #convert to adjlist
@@ -42,21 +43,26 @@ class Tree:
             u = stack.pop()
             if not visited[u]:
                 visited[u] = True
-                for v in adjlist[u]:
-                    if not visited[v]:
-                        stack.append(v)
-                        parent[v] = u
-                    elif v == src and parent[u] != src:
-                        parent[v] = u
-                        pass
+                if u == src:
+                    for v in adjlist[u]:
+                        if v != dst:
+                            if not visited[v]:
+                                stack.append(v)
+                                parent[v] = u
+                else:
+                    for v in adjlist[u]:
+                        if not visited[v]:
+                            stack.append(v)
+                            parent[v] = u
+                   
         
         cycle = []
-        track = src
-        while track != dst:
+        track = dst
+        while track != src:
             cycle.append(track)
             track = parent[track]
-        cycle.append(dst)
-        print(cycle)
+        cycle.append(src)
+        #print(cycle)
             #prev = u
         # history = []
         # visited = []

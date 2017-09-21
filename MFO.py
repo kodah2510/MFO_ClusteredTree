@@ -75,7 +75,7 @@ def main():
     pop.updateSkillFactor()
     currentGen = 0
     while(currentGen != gv.MAX_GEN):
-        print("Current Gen " + str(currentGen))
+        print("cur gen " + str(currentGen))
         #STEP 4: combination and mutation 
         pop.assortativeMating()
         #STEP 4.1: re-calculating the fitness and skill factor

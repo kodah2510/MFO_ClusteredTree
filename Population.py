@@ -12,7 +12,7 @@ class Population:
             
     def update(self):
         # sort the population
-        sorted(self.individuals, key=lambda idv: idv.scalarFitness)
+        self.individuals = sorted(self.individuals, key=lambda idv: idv.scalarFitness)
         # delete 
         for i in range(0, len(self.individuals) - gv.POPULATION):
             self.individuals.pop(i)
@@ -58,6 +58,11 @@ class Population:
         ca.eval(ca.skillFactor)
         cb.eval(cb.skillFactor)
 
+        ca.eval(0)
+        ca.eval(1)
+
+        cb.eval(0)
+        cb.eval(1)
         self.individuals.append(ca)
         self.individuals.append(cb)
 
