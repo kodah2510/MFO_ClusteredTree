@@ -55,8 +55,8 @@ class Population:
         self.__setSkillFactorForOffSpring(ca, pa, pb)
         self.__setSkillFactorForOffSpring(cb, pa, pb)
 
-        ca.eval(ca.skillFactor)
-        cb.eval(cb.skillFactor)
+        # ca.eval(ca.skillFactor)
+        # cb.eval(cb.skillFactor)
 
         ca.eval(0)
         ca.eval(1)

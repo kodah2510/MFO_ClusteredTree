@@ -7,7 +7,11 @@ class Tree:
     def __init__(self) :
         self.edge_set = []
     def mutate(self):
-        print("mutate")
+
+        # split the tree into clusters
+        # find not added edges
+        #  
+        #print("mutate")
         #find edges not in this edge_set
         notAddedEdges = []
         notAddedEdges.extend(edge for edge in gv.edges if edge not in self.edge_set)
