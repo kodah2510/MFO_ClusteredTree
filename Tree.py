@@ -2,6 +2,8 @@
 import random
 import setting as gv
 import adjlist as adj
+from collections import deque
+import shutil
 class Tree:
     #edge_set = []
     def __init__(self) :
@@ -22,6 +24,7 @@ class Tree:
         #convert to adjlist
         adjlist = []
         adjlist = adj.transform(self.edge_set)
+        self.printTree(adjlist, 1)
         # for e in self.edge_set:
         #     adjlist.insert(e.vertices[0].name, e.vertices[1].name)
         #     adjlist.insert(e.vertices[1].name, e.vertices[0].name)
@@ -32,6 +35,9 @@ class Tree:
         r_idx = random.randrange(len(cycle)) # remove_edge_index
         remove_edge = cycle[r_idx]
         self.edge_set.remove(remove_edge)
+        adjlist = []
+        adjlist = adj.transform(self.edge_set)
+        self.printTree(adjlist, 2)
         pass
     def findCycle(self, adjlist, src, dst):
         stack = []
@@ -66,34 +72,7 @@ class Tree:
             cycle.append(track)
             track = parent[track]
         cycle.append(src)
-        #print(cycle)
-            #prev = u
-        # history = []
-        # visited = []
-        # for i in range(0, len(adjlist)):
-        #     visited.append(False)
-        # cycle = []
-        # stack = []
-        # v = src 
-        # stack.append(v)
-        # while(len(stack) != 0):
-        #     v = stack.pop()
-        #     if not visited[v]:
-        #         visited[v] = True
-        #         history.append(v)
-        #         stack.extend(adjlist[v])   
-        #     else:
-        #         if(len(history) - history.index(v) > 3): #len(history) - history(index) - 1 > 2 
-        #             history.append(v)
-        #             for i in range(0, len(history)):
-        #                 for j in range (i, len(history)):
-        #                     count = 0
-        #                     if history[i] in adjlist[history[j]]:
-        #                         if count == 1:
-        #                         cycle.append(history[i])
-        #                     count += 1
-        #                         break
-        #             break
+        
 
         res = []
         for i in range(0, len(cycle) - 1, 2):
@@ -107,4 +86,36 @@ class Tree:
         pass
     def addEdges(self, edges):
         self.edge_set.extend(edges)
+        pass
+    def printTree(self, adjlist, ver):
+        file = open('tree.txt','w')
+        for i in range(0, len(adjlist)):
+            file.write( str(gv.nodes[i].name) + ' ' + 
+                        str(gv.nodes[i].x) + ' ' + 
+                        str(gv.nodes[i].y) + ' ' +
+                        str(gv.nodes[i].cluster) + 
+                        '\n')
+            
+        
+        #BFS traverse
+        prev = []
+        for i in range(0, len(adjlist)):
+            prev.append(-1)
+        S = []
+        Q = deque()
+        S.append(gv.srcIndex)
+        Q.append(gv.srcIndex)
+        while len(Q) != 0:
+            u = Q.popleft()
+            for v in adjlist[u]:
+                if v not in S:
+                    prev[v] = u
+                    S.append(v)
+                    Q.append(v)
+
+        for v in prev: 
+            file.write(str(v) + ' ')
+
+        file.close()  
+        shutil.move("./tree.txt", "./Processing/tree" + str(ver)+".txt")      
         pass
