@@ -12,7 +12,8 @@ clusters = []
 bridgeSet = []
 treeGen = tg.TreeGenerator()
 tasks = []
- 
+mutateCount = 0
+currentGen = 0
 
 
 

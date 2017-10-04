@@ -32,6 +32,7 @@ class Population:
         pb = self.individuals[pb_idx]
         rand = random.uniform(0, 1)
         if(pa.skillFactor == pb.skillFactor) or (rand < rmp):
+            print("crossover")
             self.__crossover(pa, pb)
         else:
             pa.mutate()
@@ -55,14 +56,14 @@ class Population:
         self.__setSkillFactorForOffSpring(ca, pa, pb)
         self.__setSkillFactorForOffSpring(cb, pa, pb)
 
-        # ca.eval(ca.skillFactor)
-        # cb.eval(cb.skillFactor)
+        ca.eval(ca.skillFactor)
+        cb.eval(cb.skillFactor)
 
-        ca.eval(0)
-        ca.eval(1)
+        # ca.eval(0)
+        # ca.eval(1)
 
-        cb.eval(0)
-        cb.eval(1)
+        # cb.eval(0)
+        # cb.eval(1)
         self.individuals.append(ca)
         self.individuals.append(cb)
 
@@ -83,8 +84,14 @@ class Population:
         pass
     def updateSkillFactor(self):
         #print("update skill factor ...")
+        count_1 = 0
+        count_0 = 0
         for idv in self.individuals:
             idv.updateSkillFactor()
+            if idv.skillFactor == 0: 
+                count_0 += 1
+            else: count_1 += 1
+        print(str(count_0) + " " + str(count_1))
         pass
     def updateScalarFitness(self):
         #print("update scalar fitness ...")

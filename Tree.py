@@ -9,35 +9,65 @@ class Tree:
     def __init__(self) :
         self.edge_set = []
     def mutate(self):
-
+        print("mutate")
+        gv.mutateCount += 1
+        _id = random.randrange(1000)
         # split the tree into clusters
         # find not added edges
         #  
         #print("mutate")
         #find edges not in this edge_set
-        notAddedEdges = []
-        notAddedEdges.extend(edge for edge in gv.edges if edge not in self.edge_set)
 
-        e_idx = random.randrange(len(notAddedEdges) - 1)
-        newEdge = notAddedEdges[e_idx]
-        self.edge_set.append(newEdge) # this will create a cycle
-        #convert to adjlist
         adjlist = []
         adjlist = adj.transform(self.edge_set)
         self.printTree(adjlist, 1)
-        # for e in self.edge_set:
-        #     adjlist.insert(e.vertices[0].name, e.vertices[1].name)
-        #     adjlist.insert(e.vertices[1].name, e.vertices[0].name)
+        #choose a cluster
+        cluster_rIdx = random.randrange(len(gv.clusters) - 1)
+        while len(gv.clusters[cluster_rIdx].edges) < 3:
+            cluster_rIdx = random.randrange(len(gv.clusters))
+        mutateCluster = gv.clusters[cluster_rIdx]
+        notAddedEdges = []
+        notAddedEdges.extend(edge for edge in mutateCluster.edges if edge not in self.edge_set)
+        #choose an edge to add
+        try:
+            e_idx = random.randrange(len(notAddedEdges))
+            # while notAddedEdges[e_idx] not in mutateCluster.edges: 
+            #     e_idx = random.randrange(len(notAddedEdges) - 1)
+            newEdge = notAddedEdges[e_idx]
+            self.edge_set.append(newEdge) # this will create a cycle
+            #convert to adjlist
+            # adjlist = []
+            # adjlist = adj.transform(self.edge_set)
+           
+            # for e in self.edge_set:
+            #     adjlist.insert(e.vertices[0].name, e.vertices[1].name)
+            #     adjlist.insert(e.vertices[1].name, e.vertices[0].name)
 
-        #find the cycle
-        cycle = self.findCycle(adjlist, newEdge.vertices[0].name, newEdge.vertices[1].name)
-        #pick a random edge from that cycle
-        r_idx = random.randrange(len(cycle)) # remove_edge_index
-        remove_edge = cycle[r_idx]
-        self.edge_set.remove(remove_edge)
-        adjlist = []
-        adjlist = adj.transform(self.edge_set)
-        self.printTree(adjlist, 2)
+            #find the cycle
+            cycle = self.findCycle(adjlist, newEdge.vertices[0].name, newEdge.vertices[1].name)
+            #pick a random edge from that cycle
+
+            candidates_for_execution = []
+            for e in cycle: 
+                if e in mutateCluster.edges:
+                    candidates_for_execution.append(e)
+            if len(candidates_for_execution) == 1:
+                self.edge_set.remove(candidates_for_execution[0])
+            elif len(candidates_for_execution) > 1:
+                r_idx = random.randrange(len(candidates_for_execution) - 1) # remove_edge_index
+                remove_edge = candidates_for_execution[r_idx]
+                self.edge_set.remove(remove_edge)
+            else: 
+                r_idx = random.randrange(len(cycle) - 1) # remove_edge_index
+                remove_edge = cycle[r_idx]
+                self.edge_set.remove(remove_edge)
+            adjlist = []
+            adjlist = adj.transform(self.edge_set)
+            self.printTree(adjlist, 2)
+        except ValueError:
+            #print(len(notAddedEdges))
+            print(gv.currentGen)
+
         pass
     def findCycle(self, adjlist, src, dst):
         stack = []

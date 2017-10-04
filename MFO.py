@@ -73,9 +73,9 @@ def main():
     #STEP 3: update scalar fitness and skill factor
     pop.updateScalarFitness()
     pop.updateSkillFactor()
-    currentGen = 0
-    while(currentGen != gv.MAX_GEN):
-        print("cur gen " + str(currentGen))
+   
+    while(gv.currentGen != gv.MAX_GEN):
+        #print("cur gen " + str(currentGen))
         #STEP 4: combination and mutation 
         pop.assortativeMating()
         #STEP 4.1: re-calculating the fitness and skill factor
@@ -84,13 +84,14 @@ def main():
         pop.updateSkillFactor()
         pop.update()
         outputFile.write(pop.printTheBest() + "\n")
-        currentGen += 1
+        gv.currentGen += 1
         pass
     outputFile.close()
     import shutil
     import random
     idNumber = random.randrange(1000)
     shutil.move("./output.txt", "./Output/output"+"_"+ str(idNumber)+"_"+inputFileName+".txt")
+    print(gv.mutateCount)
     pass
 if __name__=="__main__":
     #setting.init()

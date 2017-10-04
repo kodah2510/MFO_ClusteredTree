@@ -21,7 +21,10 @@ class Individual:
             self.tree.addEdges(res)
         bridges = treeGen.bridgeGen(clusters, bridgeSet)
         self.tree.addEdges(bridges)
-
+        import adjlist
+        adj = []
+        adj = adjlist.transform(self.tree.edge_set)
+        self.tree.printTree(adj, 3)
         import copy 
         self.tasks = copy.deepcopy(tasks) 
         pass
